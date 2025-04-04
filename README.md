@@ -58,18 +58,3 @@ Key parameters can be adjusted near the top of `map.py`:
 * Reward values within `Game.update`: The balance of rewards/penalties significantly impacts learning.
 * `base_speed` within `Car.move`: Affects simulation speed and control dynamics.
 * TD3 hyperparameters (discount, tau, policy\_noise, etc.) can be adjusted within `td3_agent.py` or passed during `policy.train` if needed.
-
-## Known Issues / Future Work
-
-* The agent can sometimes get stuck in loops or near boundaries, requiring careful tuning of rewards, state representation, action space, and hyperparameters.
-* The current action space only includes rotation; adding throttle control could allow for more complex behaviors.
-* The reward function may need further refinement for more robust navigation across the entire map.
-    source venv/bin/activate  # Linux/macOS
-    # venv\Scripts\activate   # Windows
-    ```
-3.  **Install Dependencies:**
-    ```bash
-    pip install numpy torch matplotlib Pillow kivy
-    ```
-    * **Kivy:** Ensure Kivy is installed correctly for your operating system. Refer to the [official Kivy installation guides](https://kivy.org/doc/stable/installation/installation.html) as OS-specific dependencies might be required (especially for macOS and Linux).
-    * **PyTorch:** Install the appropriate version for your system (CPU, CUDA, Apple Metal/MPS). Refer to the [official PyTorch website](https://pytorch.org/get-started/locally/). The included `td3_agent.py` attempts to auto-detect MPS/CUDA/CPU.
