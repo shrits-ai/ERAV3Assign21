@@ -1,0 +1,69 @@
+#:kivy 2.3.1
+
+<Car>:
+    size: 20, 10 # Adjust size as needed
+    canvas:
+        PushMatrix
+        Rotate:
+            angle: self.angle
+            origin: self.center # Rotate around center
+        Rectangle:
+            pos: self.pos[0] - self.size[0]/2, self.pos[1] - self.size[1]/2 # Center rectangle on self.pos
+            size: self.size
+            source: "./images/car.png" # Make sure car image exists
+        PopMatrix
+
+<Ball1>:
+    size: 10,10
+    canvas:
+        Color:
+            rgba: 1, 0, 0, 0.7 # Red, slightly transparent
+        Ellipse:
+            pos: self.pos[0] - self.size[0]/2, self.pos[1] - self.size[1]/2 # Center ellipse
+            size: self.size
+<Ball2>:
+    size: 10,10
+    canvas:
+        Color:
+            rgba: 0, 1, 0, 0.7 # Green, slightly transparent
+        Ellipse:
+            pos: self.pos[0] - self.size[0]/2, self.pos[1] - self.size[1]/2 # Center ellipse
+            size: self.size
+
+<Ball3>:
+    size: 10,10
+    canvas:
+        Color:
+            rgba: 0, 0, 1, 0.7 # Blue, slightly transparent
+        Ellipse:
+            pos: self.pos[0] - self.size[0]/2, self.pos[1] - self.size[1]/2 # Center ellipse
+            size: self.size
+
+<Game>:
+    # Link Python ObjectProperties to kv ids
+    car: game_car
+    ball1: game_ball1
+    ball2: game_ball2
+    ball3: game_ball3
+
+    canvas.before:
+        # Background Image - should match citymap.png orientation
+        Rectangle:
+            source: "./images/citymap.png" # Ensure this visual map matches rotated mask
+            size: 1429, 660
+            pos: self.pos
+
+    # Define the Car and Ball widgets within the Game layout
+    Car:
+        id: game_car
+        # Initial position set by serve_car() in Python
+    Ball1:
+        id: game_ball1
+    Ball2:
+        id: game_ball2
+    Ball3:
+        id: game_ball3
+
+# MyPaintWidget is not added in the Python build() method currently,
+# so no rule needed here unless you re-enable it.
+# <MyPaintWidget>:
