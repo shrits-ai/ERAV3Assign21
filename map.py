@@ -121,6 +121,25 @@ class Car(Widget):
       longueur = display_width
       largeur = display_height
 
+      # --- Determine if car is currently on path ---
+      on_path = False
+      car_x_int = int(np.clip(self.x, 0, longueur - 1))
+      car_y_int = int(np.clip(self.y, 0, largeur - 1))
+      try:
+          # Check sand value at current center position
+          if sand.shape == (largeur, longueur) and sand[car_y_int, car_x_int] < 0.1: # Path threshold
+              on_path = True
+      except IndexError:
+          print(f"IndexError checking sand in move at {car_x_int},{car_y_int}")
+      # -------------------------------------------
+
+      # --- Adjust Speed Based on Path ---
+      if on_path:
+          base_speed = 2.0 # Normal speed on path
+      else:
+          base_speed = 0.5 # Reduced speed off path (friction) - TUNE THIS VALUE
+      # ----------------------------------
+
       # 1. Set rotation property (casting input)
       current_angle_before_rotation = self.angle
       try:
@@ -132,13 +151,11 @@ class Car(Widget):
       # 2. Update angle
       self.angle = current_angle_before_rotation + self.rotation
 
-      # 3. Calculate velocity
-      base_speed = 2.0 # Speed reverted based on previous feedback
+      # 3. Calculate velocity using the adjusted base_speed
       current_velocity = Vector(base_speed, 0).rotate(current_angle_before_rotation)
 
       # Optional: Print velocity info periodically
-      # if total_timesteps % 5000 == 0:
-      #     print(f"  Move - Angle: {self.angle:.1f}, Rotation Applied: {self.rotation:.3f}, Calc Vel: ({current_velocity.x:.2f}, {current_velocity.y:.2f}), Mag: {current_velocity.length():.2f}")
+      # if total_timesteps % 5000 == 0: print(...)
 
       # 4. Calculate potential new position
       new_pos_vec = Vector(*current_velocity) + self.pos
